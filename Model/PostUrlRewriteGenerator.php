@@ -9,10 +9,11 @@ namespace Convert\Blog\Model;
 
 
 use Convert\Blog\Api\Data\PostInterface;
-use Magento\Framework\Model\AbstractModel;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\UrlRewrite\Model\Exception\UrlAlreadyExistsException;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewriteFactory;
+use Magento\UrlRewrite\Model\UrlPersistInterface;
 
 /**
  * Class PostUrlRewriteGenerator
@@ -26,7 +27,6 @@ class PostUrlRewriteGenerator
      * @var StoreManagerInterface
      */
     private $storeManager;
-
     /**
      * @var UrlRewriteFactory
      */
@@ -39,28 +39,36 @@ class PostUrlRewriteGenerator
      * @var PostUrlGenerator
      */
     private $postUrlGenerator;
+    /**
+     * @var UrlPersistInterface
+     */
+    private $urlPersist;
 
     /**
      * @param StoreManagerInterface $storeManager
      * @param UrlRewriteFactory $urlRewriteFactory
      * @param PostUrlGenerator $postUrlGenerator
+     * @param UrlPersistInterface $urlPersist
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         UrlRewriteFactory     $urlRewriteFactory,
-        PostUrlGenerator $postUrlGenerator
+        PostUrlGenerator $postUrlGenerator,
+        UrlPersistInterface     $urlPersist
     )
     {
         $this->storeManager = $storeManager;
         $this->urlRewriteFactory = $urlRewriteFactory;
         $this->postUrlGenerator = $postUrlGenerator;
+        $this->urlPersist = $urlPersist;
     }
 
     /**
      * @param PostInterface $post
-     * @return UrlRewrite[]
+     * @return void
+     * @throws UrlAlreadyExistsException
      */
-    public function generate(PostInterface $post): array
+    public function generate(PostInterface $post): void
     {
         $this->setAsPostProperty($post);
         $urls = [];
@@ -68,7 +76,12 @@ class PostUrlRewriteGenerator
             $urls[] = $this->createUrlRewrite($store->getStoreId());
         }
 
-        return $urls;
+        $this->urlPersist->deleteByData([
+            UrlRewrite::ENTITY_ID => $post->getId(),
+            UrlRewrite::ENTITY_TYPE => PostUrlRewriteGenerator::ENTITY_TYPE
+        ]);
+
+        $this->urlPersist->replace($urls);
     }
 
     /**

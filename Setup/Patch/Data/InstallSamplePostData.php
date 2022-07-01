@@ -10,6 +10,7 @@ namespace Convert\Blog\Setup\Patch\Data;
 
 use Convert\Blog\Api\Data\PostInterface;
 use Convert\Blog\Api\PostRepositoryInterface;
+use Convert\Blog\Model\PostUrlRewriteGenerator;
 use Convert\Blog\Model\ResourceModel\Post\CollectionFactory;
 use Convert\Blog\Model\PostFactory;
 use Exception;
@@ -42,24 +43,31 @@ class InstallSamplePostData implements DataPatchInterface, PatchRevertableInterf
      * @var PostRepositoryInterface
      */
     private $postRepository;
+    /**
+     * @var PostUrlRewriteGenerator
+     */
+    private $postUrlRewriteGenerator;
 
     /**
      * @param CollectionFactory $collectionFactory
      * @param PostFactory $postFactory
      * @param PostRepositoryInterface $postRepository
      * @param DataObjectHelper $dataObjectHelper
+     * @param PostUrlRewriteGenerator $postUrlRewriteGenerator
      */
     public function __construct(
         CollectionFactory $collectionFactory,
         PostFactory $postFactory,
         PostRepositoryInterface $postRepository,
-        DataObjectHelper $dataObjectHelper
+        DataObjectHelper $dataObjectHelper,
+        PostUrlRewriteGenerator $postUrlRewriteGenerator
     )
     {
         $this->collectionFactory = $collectionFactory;
         $this->postFactory = $postFactory;
         $this->dataObjectHelper = $dataObjectHelper;
         $this->postRepository = $postRepository;
+        $this->postUrlRewriteGenerator = $postUrlRewriteGenerator;
     }
 
     /**
@@ -115,6 +123,7 @@ class InstallSamplePostData implements DataPatchInterface, PatchRevertableInterf
             $post = $this->postFactory->create();
             $this->dataObjectHelper->populateWithArray($post, $postData, PostInterface::class);
             $this->postRepository->save($post);
+            $this->postUrlRewriteGenerator->generate($post);
         }
     }
 

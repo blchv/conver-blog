@@ -55,14 +55,7 @@ class ProcessPostAfterSave
     )
     {
         if ($subject->dataHasChangedFor('url_key')) {
-            $urls = $this->postUrlRewriteGenerator->generate($result);
-
-            $this->urlPersist->deleteByData([
-                UrlRewrite::ENTITY_ID => $result->getId(),
-                UrlRewrite::ENTITY_TYPE => PostUrlRewriteGenerator::ENTITY_TYPE
-            ]);
-
-            $this->urlPersist->replace($urls);
+            $this->postUrlRewriteGenerator->generate($result);
         }
     }
 
