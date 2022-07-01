@@ -9,7 +9,7 @@
             "email": "ivan@imbelchev.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "magento/product-community-edition": ">=2.3.5 <2.4.3"
     },
