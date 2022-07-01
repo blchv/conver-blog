@@ -1,0 +1,227 @@
+#
+# Start with an empty database
+#
+
+# @name Authenticate with Magento
+POST {{host}}/rest/all/V1/integration/admin/token
+Content-Type: application/json
+
+{"username": "{{user}}", "password": "{{password}}"}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('We are getting a token', function () {
+        client.assert(typeof response.body === 'string');
+        client.global.set("adminToken", response.body);
+    });
+%}
+
+###
+
+# @name Test Get All Public Posts
+GET {{host}}/rest/V1/blog/post
+Authorization: Bearer {{adminToken}}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('There are no posts created', function () {
+        client.assert(response.body.length === 0);
+    });
+%}
+
+###
+
+# @name Test Create First New Post
+POST {{host}}/rest/V1/blog/post
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "post": {
+        "title": "Post 1 title",
+        "content": "Post 1 content",
+        "isDraft": false,
+        "urlKey": "post-1"
+    }
+}
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('Post is created successfully with correct data', function () {
+        client.assert(response.body['title'] === 'Post 1 title', 'Assert title');
+        client.assert(response.body['content'] === 'Post 1 content', 'Assert content');
+        client.assert(response.body['is_draft'] === false, 'Assert draft');
+        client.assert(response.body['url_key'] === 'post-1', 'Assert url');
+        client.global.set("postOne", JSON.stringify(response.body));
+    });
+%}
+
+###
+
+# @name Create Second New Post
+POST {{host}}/rest/V1/blog/post
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "post": {
+        "title": "Post 2 title",
+        "content": "Post 2 content",
+        "is_draft": true,
+        "url_key": "post-2"
+    }
+}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+        client.global.set("postTwo", JSON.stringify(response.body));
+        client.global.set("postTwoId", response.body.id);
+    });
+%}
+
+###
+
+# @name Create Third New Post
+POST {{host}}/rest/V1/blog/post
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "post": {
+        "title": "Post 3 title",
+        "content": "Post 3 content",
+        "is_draft": false,
+        "url_key": "post-3"
+    }
+}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+        client.global.set("postThree", JSON.stringify(response.body));
+        client.global.set("postThreeId", response.body.id);
+    });
+%}
+
+###
+
+# @name Test Get 2 Public Posts
+GET {{host}}/rest/V1/blog/post
+Authorization: Bearer {{adminToken}}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('Post 1 is in response', function () {
+        const savedPost = JSON.parse(client.global.get("postOne"));
+        const postData = response.body.filter(
+            function (elem) {
+                return elem.id === savedPost.id;
+            }
+        );
+
+        client.assert(postData[0].title === savedPost.title);
+    });
+
+    client.test('Post 3 is in response', function () {
+        const savedPost = JSON.parse(client.global.get("postThree"));
+        const postData = response.body.filter(
+            function (elem) {
+                return elem.id === savedPost.id;
+            }
+        );
+
+        client.assert(postData[0].title === savedPost.title);
+    });
+%}
+
+###
+
+# @name Test Get Post By Id
+GET {{host}}/rest/V1/blog/post/{{postThreeId}}
+Authorization: Bearer {{adminToken}}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('Post 3 is fetched', function () {
+        const savedPost = JSON.parse(client.global.get("postThree"));
+        client.assert(response.body.content === savedPost.content);
+    });
+%}
+
+###
+
+# @name Test Update Post
+PUT {{host}}/rest/V1/blog/post/{{postThreeId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "post": {
+        "id": {{postThreeId}},
+        "is_draft": false,
+        "url_key": "post-3-updated",
+        "title": "Post 3 title updated",
+        "content": "Post 3 content updated"
+    }
+}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('Test post is updated', function () {
+        client.assert(response.body['url_key'] === "post-3-updated");
+    });
+%}
+
+###
+
+# @name Test Delete Post
+DELETE {{host}}/rest/V1/blog/post/{{postThreeId}}
+Authorization: Bearer {{adminToken}}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('Test delete response', function () {
+        client.assert(response.body === true);
+    });
+%}
+
+###
+
+# @name Test Get 1 Public Post
+GET {{host}}/rest/V1/blog/post
+Authorization: Bearer {{adminToken}}
+
+> {%
+    client.test('Response is OK', function () {
+        client.assert(response.status === 200);
+    });
+
+    client.test('Post 1 is in response', function () {
+        client.assert(response.body.length === 1);
+    });
+%}
+
+###
+
+

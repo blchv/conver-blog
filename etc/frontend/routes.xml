@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="blog" frontName="blog">
+            <module name="Convert_Blog" />
+        </route>
+    </router>
+</config>

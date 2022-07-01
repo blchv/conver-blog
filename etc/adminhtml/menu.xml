@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<config>
+    <menu>
+        <add id="Convert_Blog::post" title="Blog" translate="title" module="Convert_Blog" sortOrder="55" resource="Convert_Blog::post"/>
+        <add id="Convert_Blog::post_list" title="All posts" translate="title" module="Convert_Blog" sortOrder="0" parent="Convert_Blog::post" action="blog/index" resource="Convert_Blog::post_list"/>
+        <add id="Convert_Blog::post_save" title="New post" translate="title" module="Convert_Blog" sortOrder="30" parent="Convert_Blog::post" action="blog/post/new" resource="Convert_Blog::post_save"/>
+    </menu>
+</config>

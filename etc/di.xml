@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Convert\Blog\Api\Data\PostInterface" type="Convert\Blog\Model\Post" />
+    <preference for="Convert\Blog\Api\PostRepositoryInterface" type="Convert\Blog\Model\PostRepository" />
+    <preference for="Convert\Blog\Api\PostSearchResultsInterface" type="Convert\Blog\Model\PostSearchResults" />
+
+    <type name="Convert\Blog\Model\PostRepository">
+        <arguments>
+            <argument name="resource" xsi:type="object">
+                Convert\Blog\Model\ResourceModel\Post\Proxy
+            </argument>
+            <argument name="collectionProcessor" xsi:type="object">
+                Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface\Proxy
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,19 @@
+<?php
+/*
+ * @author    Ivan Belchev <ivan@imbelchev.com>
+ * @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+ * @link      https://imbelchev.com
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Convert\Blog\ViewModel\PostDataProvider $dataProvider
+ */
+
+$dataProvider = $block->getData('DataProvider');
+$dataProvider->loadPostFromRequest();
+?>
+<?php if ($dataProvider->hasPost()): ?>
+    <article class="post-wrapper">
+        <?= $block->getChildHtml(''); ?>
+    </article>
+<?php endif; ?>

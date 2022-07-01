@@ -1,0 +1,44 @@
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="blog_post_listing_data_source" xsi:type="string">Convert\Blog\Model\ResourceModel\Post\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Convert\Blog\Model\ResourceModel\Post\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">convert_blog_post_entity</argument>
+            <argument name="eventPrefix" xsi:type="string">blog_post_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">blog_post_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Convert\Blog\Model\ResourceModel\Post</argument>
+        </arguments>
+    </type>
+
+    <type name="Convert\Blog\Model\ResourceModel\Post">
+        <plugin name="convert_blog_validate_post_data"
+                type="Convert\Blog\Plugin\ValidatePostData"
+                sortOrder="10" disabled="false"/>
+
+    </type>
+    <type name="Convert\Blog\Model\Post">
+        <plugin name="convert_blog_process_post_after_save"
+                type="Convert\Blog\Plugin\ProcessPostAfterSave"
+                sortOrder="20" disabled="false"/>
+    </type>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Save">
+        <plugin name="convert_blog_create_post_on_product_create"
+                type="Convert\Blog\Plugin\CreatePostForNewProduct"
+                sortOrder="20" disabled="false"/>
+    </type>
+</config>

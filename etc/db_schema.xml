@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="convert_blog_post_entity" resource="default" engine="innodb"
+           comment="Blog posts from the Convert_Blog module">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="author" nullable="true" length="255" comment="Author"/>
+        <column xsi:type="boolean" name="is_draft" nullable="false" default="false" comment="Is the post a draft?"/>
+        <column xsi:type="varchar" name="url_key" nullable="true" length="255" comment="Url key"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Post Title"/>
+        <column xsi:type="mediumtext" name="content" nullable="true" comment="Post Content"/>
+        <column xsi:type="timestamp" name="publish_time" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="Publish Time"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CONVERT_BLOG_POST_ENTITY_ENTITY_ID_URL_KEY">
+            <column name="entity_id"/>
+            <column name="url_key"/>
+        </constraint>
+
+        <index referenceId="CONVERT_BLOG_POST_ENTITY_ENTITY_ID_AUTHOR" indexType="btree">
+            <column name="entity_id"/>
+            <column name="author"/>
+        </index>
+        <index referenceId="CONVERT_BLOG_POST_ENTITY_TITLE_CONTENT" indexType="fulltext">
+            <column name="title"/>
+            <column name="content"/>
+        </index>
+    </table>
+</schema>

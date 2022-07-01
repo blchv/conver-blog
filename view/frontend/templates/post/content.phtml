@@ -1,0 +1,15 @@
+<?php
+/*
+ * @author    Ivan Belchev <ivan@imbelchev.com>
+ * @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+ * @link      https://imbelchev.com
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Convert\Blog\ViewModel\PostDataProvider $dataProvider
+ */
+$dataProvider = $block->getParentBlock()->getData('DataProvider');
+?>
+<section class="post-content">
+    <?= $dataProvider->getCurrentContent() ?>
+</section>

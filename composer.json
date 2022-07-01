@@ -1,0 +1,24 @@
+{
+    "name": "blchv/convert-blog",
+    "description": "A simple blog module",
+    "type": "magento2-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Belchev",
+            "email": "ivan@imbelchev.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "magento/product-community-edition": ">=2.3.5 <2.4.3"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Convert\\Blog\\": ""
+        }
+    }
+}

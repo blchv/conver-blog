@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/blog/post/:postId" method="GET">
+        <service class="Convert\Blog\Api\PostRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/blog/post" method="GET">
+        <service class="Convert\Blog\Api\PostRepositoryInterface" method="getAllPublicPosts"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+    <route url="/V1/blog/post" method="POST">
+        <service class="Convert\Blog\Api\PostRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Convert_Blog::post_save"/>
+        </resources>
+    </route>
+
+    <route url="/V1/blog/post/:postId" method="PUT">
+        <service class="Convert\Blog\Api\PostRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Convert_Blog::post_save"/>
+        </resources>
+    </route>
+
+    <route url="/V1/blog/post/:postId" method="DELETE">
+        <service class="Convert\Blog\Api\PostRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="Convert_Blog::post_delete"/>
+        </resources>
+    </route>
+
+    <route url="/V1/post/analytics/:postId" method="POST">
+        <service class="Convert\Blog\Model\Analytics\PostAnalyticsService" method="ingest"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+</routes>

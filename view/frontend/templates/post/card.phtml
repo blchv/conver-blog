@@ -1,0 +1,36 @@
+<?php
+/*
+ * @author    Ivan Belchev <ivan@imbelchev.com>
+ * @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+ * @link      https://imbelchev.com
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Convert\Blog\ViewModel\PostDataProvider $dataProvider
+ * @var \Convert\Blog\Api\Data\PostInterface $post
+ */
+
+$dataProvider = $block->getParentBlock()->getData('DataProvider');
+$post = $block->getData('post');
+
+$dataProvider->setPost($post);
+?>
+<?php if ($dataProvider->hasPost()): ?>
+    <section class="post-header">
+        <h2 class="post-header-title">
+            <a href="<?= $dataProvider->getUrlForPost($post) ?>" title="<?= $dataProvider->getCurrentTitle() ?>">
+                <?= $dataProvider->getCurrentTitle() ?>
+            </a>
+        </h2>
+
+        <address  class="post-header-author">
+            <?= __('By %1', $dataProvider->getCurrentAuthor()) ?>
+        </address>
+
+        <?php $dateTime = $dataProvider->getCurrentPublishTime() ?>
+        <time class="post-header-publishdate" datetime="<?= $dateTime ?>">
+            <?= __('Published on %1', $dateTime) ?>
+        </time>
+    </section>
+    <hr>
+<?php endif; ?>

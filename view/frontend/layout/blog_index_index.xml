@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="blog_list" template="Convert_Blog::blog/list.phtml">
+                <arguments>
+                    <argument name="DataProvider" xsi:type="object">Convert\Blog\ViewModel\PostDataProvider</argument>
+                </arguments>
+                <block class="Magento\Framework\View\Element\Template" name="post_card" as="post_card" template="Convert_Blog::post/card.phtml" />
+            </block>
+        </referenceContainer>
+    </body>
+</page>

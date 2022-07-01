@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="convert" translate="label" sortOrder="50">
+            <label>Convert</label>
+        </tab>
+        <section id="blog" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+            <label>Blog</label>
+            <tab>convert</tab>
+            <resource>Convert_Blog::config_convert_blog</resource>
+            <group id="general" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>General</label>
+                <field id="enabled" type="select" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Enable or Disable the blog</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <config_path>blog/general/enabled</config_path>
+                </field>
+                <field id="default_author" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Default author name</label>
+                    <config_path>blog/general/author</config_path>
+                </field>
+            </group>
+            <group id="posts" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Posts configuration</label>
+                <field id="sort_by" type="select" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Sort posts by</label>
+                    <source_model>Convert\Blog\Model\Config\Source\SortBy</source_model>
+                    <config_path>blog/posts/sortby</config_path>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

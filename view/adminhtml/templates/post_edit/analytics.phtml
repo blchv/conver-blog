@@ -1,0 +1,29 @@
+<?php
+/*
+ * @author    Ivan Belchev <ivan@imbelchev.com>
+ * @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+ * @link      https://imbelchev.com
+ */
+/**
+ * @var \Magento\Backend\Block\Template $block
+ * @var \Convert\Blog\ViewModel\PostAnalytics $postAnalytics
+ * @var \Convert\Blog\ViewModel\PostDataProvider $dataProvider
+ */
+
+$postAnalytics = $block->getData('PostAnalytics');
+$dataProvider = $block->getData('DataProvider');
+
+$dataProvider->loadPostFromRequest();
+
+?>
+<?php if($dataProvider->hasPost() && $viewCount = $postAnalytics->getViewForPostByRequest()): ?>
+<h2><?= __('Post Analytics:')?></h2>
+    <table>
+        <tbody>
+            <tr>
+                <th style="padding: .5em;"><?= __('View count: ') ?></th>
+                <td style="padding: .5em;"><?= $viewCount ?></td>
+            </tr>
+        </tbody>
+    </table>
+<?php endif; ?>

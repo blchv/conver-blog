@@ -1,0 +1,31 @@
+<?php
+/*
+ * @author    Ivan Belchev <ivan@imbelchev.com>
+ * @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+ * @link      https://imbelchev.com
+ */
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Convert\Blog\ViewModel\PostDataProvider $dataProvider
+ * @var \Convert\Blog\ViewModel\PostAnalytics $postAnalytics
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$postAnalytics = $block->getData('PostAnalytics');
+$dataProvider = $block->getParentBlock()->getData('DataProvider');
+?>
+<script type="text/x-magento-init">
+{
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "post-analytics": {
+                        "component": "Convert_Blog/js/post-analytics",
+                        "endpoint": "<?= $escaper->escapeJs($postAnalytics->getEndpoint()) ?>",
+                        "postId": "<?= $escaper->escapeJs($dataProvider->getCurrentPostId()) ?>"
+                    }
+                }
+            }
+        }
+    }
+</script>

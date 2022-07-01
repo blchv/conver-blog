@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author    Ivan Belchev <ivan@imbelchev.com>
+  ~ @copyright Copyright (c) 2022 MIT (see LICENSE.md)
+  ~ @link      https://imbelchev.com
+  -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content" htmlClass="post" htmlTag="div">
+            <block class="Magento\Framework\View\Element\Template" name="post_article" template="Convert_Blog::post/wrapper.phtml">
+                <arguments>
+                    <argument name="DataProvider" xsi:type="object">Convert\Blog\ViewModel\PostDataProvider</argument>
+                </arguments>
+                <block class="Magento\Framework\View\Element\Template" name="post_header" template="Convert_Blog::post/header.phtml" />
+                <block class="Magento\Framework\View\Element\Template" name="post_content" template="Convert_Blog::post/content.phtml" />
+                <block class="Magento\Framework\View\Element\Template" name="post_footer" template="Convert_Blog::post/footer.phtml">
+                    <arguments>
+                        <argument name="PostAnalytics" xsi:type="object">Convert\Blog\ViewModel\PostAnalytics</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

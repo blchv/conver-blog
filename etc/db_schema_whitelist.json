@@ -1,0 +1,21 @@
+{
+    "convert_blog_post_entity": {
+        "column": {
+            "entity_id": true,
+            "author": true,
+            "is_draft": true,
+            "url_key": true,
+            "title": true,
+            "content": true,
+            "publish_time": true
+        },
+        "index": {
+            "CONVERT_BLOG_POST_ENTITY_ENTITY_ID_AUTHOR": true,
+            "CONVERT_BLOG_POST_ENTITY_TITLE_CONTENT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CONVERT_BLOG_POST_ENTITY_ENTITY_ID_URL_KEY": true
+        }
+    }
+}
